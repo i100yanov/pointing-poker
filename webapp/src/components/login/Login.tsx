@@ -1,53 +1,83 @@
 import React, { Component } from "react";
 import "./Login.css";
 import { ChangeEvent } from "react";
+import { AuthenticationService } from "../../services/AuthenticationService";
+import { string } from "prop-types";
 
 export default class Login extends Component<IProps, IState>{
   constructor(props: any) {
     super(props);
 
     this.state = {
-      email: "",
-      password: ""
+      username: "",
+      password: "",
+      message: ""
     };
   }
 
   render() {
     return (
       <div className="Login">
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={(e) => this.handleSubmit(e)}>
           <div>
             <label>Username</label>
-            <input type="text" name="email" value={this.state.email} onChange={ (event) =>  this.handleChange(event) } placeholder="Username or Email"></input>
+            <input type="text" name="username" value={this.state.username} onChange={(event) => this.handleChange(event)} placeholder="Username or Email"></input>
           </div>
           <div>
             <label>Password</label>
-            <input type="password" name="password" value={this.state.password} onChange={ (event) =>  this.handleChange(event) } placeholder="Password"></input>
+            <input type="password" name="password" value={this.state.password} onChange={(event) => this.handleChange(event)} placeholder="Password"></input>
           </div>
 
           <button disabled={false} type="submit"> Login </button>
+          <div>{this.state.message}</div>
         </form>
       </div>
     );
   }
 
-  handleChange (e: React.ChangeEvent<HTMLInputElement>) {
+  handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const key = e.currentTarget.name;
     const value = e.currentTarget.value;
 
     if (Object.keys(this.state).includes(key)) {
-      this.setState({[key]: value } as Pick<IState, keyof IState>);
+      this.setState({ [key]: value } as Pick<IState, keyof IState>);
     }
   }
 
-  handleSubmit(){
+  handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    // validate form
+    e.preventDefault();
+    const authenticationService = new AuthenticationService();
+    authenticationService
+      .login(this.state.username, this.state.password)
+      .then(
+        (response) =>
+          response.text())
+      .then(
+        (text) =>
+          this.onLoginSuccess(this.state.username, text))
+      .catch((error) =>
+        this.onLoginFailed(this.state.username, error.toString())
+      );
   }
-  
-}
 
+  onLoginFailed(username: string, error: string) {
+    this.setState({ message: "Login of " + this.state.username + " failed with error: " + error });
+  }
+
+  onLoginSuccess(username: string, token: string) {
+    if (token && token.length > 0) {
+      this.setState({ message: "Login of " + this.state.username + " was successful." });
+    }
+    else {
+      this.onLoginFailed(this.state.username, "Login failed - username and password does not match.")
+    }
+  }
+}
 interface IState {
-  email: string,
-  password: string
+  username: string,
+  password: string,
+  message: string;
 }
 
 interface IProps { }

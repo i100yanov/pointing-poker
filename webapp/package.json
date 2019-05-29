@@ -2,7 +2,8 @@
   "name": "pointing-poker-webapp",
   "version": "0.1.0",
   "private": true,
-  "homepage": "/poker/",
+  "homepage": "http://localhost/poker/",
+  "proxy": "http://localhost/poker/api",
   "dependencies": {
     "@types/jest": "24.0.13",
     "@types/node": "12.0.1",

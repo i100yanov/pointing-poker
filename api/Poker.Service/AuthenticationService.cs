@@ -1,4 +1,5 @@
-﻿using Poker.Domain.Entities.Interfaces;
+﻿using System.Collections.Generic;
+using Poker.Domain.Entities.Interfaces;
 using Poker.Domain.Factories.Interfaces;
 using Poker.Service.Interfaces;
 using Poker.Transportation.Repository.Base.Interfaces;
@@ -9,6 +10,7 @@ namespace Poker.Service
     {
         #region -- private readonly fields --
 
+        private readonly Dictionary<string, string> activeUserTokens = new Dictionary<string, string>(System.StringComparer.OrdinalIgnoreCase);
         private readonly IUnitOfWork _unitOfWork;
 
         private readonly IUserFactory _userFactory;
@@ -28,12 +30,26 @@ namespace Poker.Service
 
         #region -- public methods --
 
-        public bool Authenticate(string username, string password)
+        public string Authenticate(string username, string password)
         {
             IUser user = _userFactory.Get(username);
 
-            return user != null && 
-                   user.CheckPassword(password);
+            bool valid =  user != null && user.CheckPassword(password);
+            string authToken = null;
+            if (valid)
+            {
+                if (!activeUserTokens.ContainsKey(username))
+                {
+                    authToken = System.Guid.NewGuid().ToString("D");
+                    activeUserTokens.Add(username, authToken);
+                }
+                else
+                {
+                    authToken = activeUserTokens[username];
+                }
+            }
+
+            return authToken;
         }
 
         #endregion

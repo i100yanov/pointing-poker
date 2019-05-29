@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Poker.Model.User;
 using Poker.Service.Interfaces;
+using Poker.WebApi.RestModels;
 
 namespace Poker.WebUI.Controllers
 {
@@ -27,8 +28,8 @@ namespace Poker.WebUI.Controllers
 
         #endregion
 
-        [HttpGet("login")]
-        public ActionResult Login(string email,string password)
+        [HttpPost("login")]
+        public ActionResult Login([FromBody]LoginData loginData)
         {
             try
             {
@@ -38,16 +39,16 @@ namespace Poker.WebUI.Controllers
                     return StatusCode(401);
                 }
 */
-                bool result = _authenticationService.Authenticate(email.Trim(), password.Trim());
+                string token = _authenticationService.Authenticate(loginData.Username.Trim(), loginData.Password.Trim());
 
-                if (!result)
+                if (string.IsNullOrEmpty(token))
                 {
                     return BadRequest();
                 }
 
-                UserModel model = _userService.Get(email.Trim());
+                UserModel model = _userService.Get(loginData.Username.Trim());
 
-                return Ok(model);
+                return Ok(token);
             }
             catch (Exception e)
             {
