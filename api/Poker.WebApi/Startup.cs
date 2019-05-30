@@ -23,6 +23,7 @@ namespace Poker.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddMvc();
             Registry.Register(services, Configuration.GetConnectionString("DefaultConnectionString"));
         }
@@ -35,6 +36,7 @@ namespace Poker.WebApi
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors( opt =>  opt.WithOrigins("*").AllowAnyHeader().AllowAnyMethod());
             app.UseMvc();
         }
     }

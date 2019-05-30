@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Poker.Service", "Poker.Serv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Poker.Model", "Poker.Model\Poker.Model.csproj", "{98ABDE5C-AEFB-4396-98AF-0138F075DF95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poker.WebApi", "Poker.WebApi\Poker.WebApi.csproj", "{52608012-CFB1-4B61-82CA-678E29EEC8DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Poker.WebApi", "Poker.WebApi\Poker.WebApi.csproj", "{52608012-CFB1-4B61-82CA-678E29EEC8DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

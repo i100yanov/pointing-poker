@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./Login.css";
 import { ChangeEvent } from "react";
 import { AuthenticationService } from "../../services/AuthenticationService";
-import { string } from "prop-types";
+import { UserContext } from "../context/UserContext";
 
 export default class Login extends Component<IProps, IState>{
   constructor(props: any) {
@@ -68,16 +68,23 @@ export default class Login extends Component<IProps, IState>{
   onLoginSuccess(username: string, token: string) {
     if (token && token.length > 0) {
       this.setState({ message: "Login of " + this.state.username + " was successful." });
+      this.context.username = username;
+      this.context.token = token;
+      this.props.history.push("/board");
     }
     else {
       this.onLoginFailed(this.state.username, "Login failed - username and password does not match.")
     }
   }
 }
+Login.contextType = UserContext;
+
 interface IState {
   username: string,
   password: string,
   message: string;
 }
 
-interface IProps { }
+interface IProps {
+  history : string[];
+ }
