@@ -1,5 +1,4 @@
 import React from "react";
-import { string } from "prop-types";
 
 const defaultUserContext : IUserContext = { username: '', token: ''}
 export const UserContext = React.createContext<IUserContext>(defaultUserContext);

@@ -3,9 +3,11 @@ import "./Login.css";
 import { ChangeEvent } from "react";
 import { AuthenticationService } from "../../services/AuthenticationService";
 import { UserContext } from "../context/UserContext";
+import { Redirect } from "react-router";
+import { Link } from "react-router-dom";
 
 export default class Login extends Component<IProps, IState>{
-  constructor(props: any) {
+  constructor(props: IProps) {
     super(props);
 
     this.state = {
@@ -31,6 +33,9 @@ export default class Login extends Component<IProps, IState>{
           <button disabled={false} type="submit"> Login </button>
           <div>{this.state.message}</div>
         </form>
+        <Link to="/profile/create">Sign Up</Link>
+        <Link to="/board">Board</Link>
+
       </div>
     );
   }
