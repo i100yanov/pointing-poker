@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import "./Login.css";
 import { ChangeEvent } from "react";
-import { AuthenticationService } from "../../services/AuthenticationService";
+import { AuthenticationService } from "../../api/AuthenticationService";
 import { UserContext } from "../context/UserContext";
-import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 
 export default class Login extends Component<IProps, IState>{
@@ -68,6 +67,9 @@ export default class Login extends Component<IProps, IState>{
 
   onLoginFailed(username: string, error: string) {
     this.setState({ message: "Login of " + this.state.username + " failed with error: " + error });
+    this.context.username = '';
+    this.context.token = '';
+    this.context.authenticated = false;
   }
 
   onLoginSuccess(username: string, token: string) {
@@ -75,6 +77,7 @@ export default class Login extends Component<IProps, IState>{
       this.setState({ message: "Login of " + this.state.username + " was successful." });
       this.context.username = username;
       this.context.token = token;
+      this.context.authenticated = true;
       this.props.history.push("/board");
     }
     else {

@@ -13,10 +13,12 @@ export default class Board extends Component<IProps, IState>{
     return (
       
       <div className="Bord">
-        HELLO 
-      <UserContext.Consumer>
-         { value => value.username }
-      </UserContext.Consumer>
+        <h1>HELLO</h1>
+        <h2> 
+        <UserContext.Consumer>
+          { ctx => ctx.username }
+        </UserContext.Consumer>
+      </h2> 
       </div>
     );
   }

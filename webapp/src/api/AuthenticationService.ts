@@ -9,7 +9,7 @@ export class AuthenticationService implements IAuthenticationService {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             headers: {
                 'Accept' : 'application/json',
-                'Content-type' : 'application/json'
+                'Content-type' : 'application/json',
             },
             body: JSON.stringify(data), // body data type must match "Content-Type" header
         };
