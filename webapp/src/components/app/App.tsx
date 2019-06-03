@@ -6,6 +6,7 @@ import { Route,   Switch,  BrowserRouter as Router } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import PrivateRoute from '../rotue/PrivateRoute';
 import Homepage from '../home/Homepage';
+import CreateProfile from '../profile/create/CreateProfile';
 
 export default class App extends React.Component {
   
@@ -20,6 +21,7 @@ export default class App extends React.Component {
             <Router>
             <Switch>
               <Route exact path='/login' component={Login}/>
+              <Route exact path='/profile/create' component={CreateProfile}/>
               <PrivateRoute exact path='/' context={ ctx } component={Homepage} />
               <PrivateRoute path='/board'  context={ ctx } component={Board}/>
             </Switch>
