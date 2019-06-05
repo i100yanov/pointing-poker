@@ -5,10 +5,10 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
-namespace Poker.WebApi.RestModels
+namespace Poker.Model
 {
     [DataContract]
-    public class LoginData
+    public class LoginModel
     {
         [DataMember(Name = "username", IsRequired = true)]
         [Required]

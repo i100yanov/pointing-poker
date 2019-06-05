@@ -7,18 +7,18 @@ namespace Poker.Service.Interfaces
     {
         UserModel Get(string username);
 
-        IList<ValidationError> Register(SaveModel model);
+        IList<ValidationError> Register(CreateModel model);
 
-        IList<ValidationError> Validate(SaveModel model, bool checkUsernameExists);
+        IList<ValidationError> Validate(CreateModel model, bool checkUsernameExists);
 
-        ValidationError? ValidateUsername(SaveModel model, bool checkUsernameExists);
+        ValidationError? ValidateUsername(CreateModel model, bool checkUsernameExists);
 
-        ValidationError? ValidatePassword(SaveModel model);
+        ValidationError? ValidatePassword(CreateModel model);
 
-        ValidationError? ValidateFirstname(SaveModel model);
+        ValidationError? ValidateFirstname(CreateModel model);
 
-        ValidationError? ValidateLastname(SaveModel model);
+        ValidationError? ValidateLastname(CreateModel model);
 
-        ValidationError? ValidateEmail(SaveModel model);
+        ValidationError? ValidateEmail(CreateModel model);
     }
 }

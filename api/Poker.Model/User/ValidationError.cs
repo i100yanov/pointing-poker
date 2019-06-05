@@ -2,7 +2,7 @@
 {
     public enum ValidationError
     {
-        UsernameMissing,
+        UsernameMissing = 1,
         UsernameExists,
         UsernameToLong,
         PasswordMissing,

@@ -4,6 +4,7 @@ import { ChangeEvent } from "react";
 import { AuthenticationService } from "../../api/AuthenticationService";
 import { UserContext } from "../context/UserContext";
 import { Link } from "react-router-dom";
+import { Form, FormControlProps, Button, Alert } from "react-bootstrap";
 
 export default class Login extends Component<IProps, IState>{
   constructor(props: IProps) {
@@ -12,29 +13,50 @@ export default class Login extends Component<IProps, IState>{
     this.state = {
       username: "",
       password: "",
-      message: ""
+      message: "",
     };
   }
 
   render() {
     return (
       <div className="Login">
-        <form onSubmit={(e) => this.handleSubmit(e)}>
-          <div>
-            <label>Username</label>
-            <input type="text" name="username" value={this.state.username} onChange={(event) => this.handleChange(event)} placeholder="Username or Email"></input>
-          </div>
-          <div>
-            <label>Password</label>
-            <input type="password" name="password" value={this.state.password} onChange={(event) => this.handleChange(event)} placeholder="Password"></input>
-          </div>
 
-          <button disabled={false} type="submit"> Login </button>
-          <div>{this.state.message}</div>
-        </form>
-        <Link to="/profile/create">Sign Up</Link>
-        <Link to="/board">Board</Link>
+        <Form 
+            onSubmit={ (e: any) => this.handleSubmit(e)}>
 
+          <Form.Group>
+            <Form.Label>Username</Form.Label>
+            <Form.Control
+              autoFocus
+              required
+              name="username"
+              value={this.state.username}
+              onChange={  (e:any) => this.handleChange(e) }
+              isValid={ !!this.state.username }
+            />
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              required
+              name="password"
+              value={this.state.password}
+              onChange={  (e:any)  => this.handleChange(e) }
+              type="password"
+              isValid={ !!this.state.password }
+            />
+      </Form.Group>
+
+        <Button
+            block
+            type="submit"
+          >
+            Login
+          </Button>
+      </Form>
+      <Link to="/profile/create">Sign Up</Link>
+      <h3>{this.state.message}</h3>
       </div>
     );
   }
@@ -55,11 +77,8 @@ export default class Login extends Component<IProps, IState>{
     authenticationService
       .login(this.state.username, this.state.password)
       .then(
-        (response) =>
-          response.text())
-      .then(
         (text) =>
-          this.onLoginSuccess(this.state.username, text))
+          this.onLoginSuccess(this.state.username, JSON.parse(text)))
       .catch((error) =>
         this.onLoginFailed(this.state.username, error.toString())
       );

@@ -1,4 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+
+using Microsoft.IdentityModel.Tokens;
+
 using Poker.Domain.Entities.Interfaces;
 using Poker.Domain.Factories.Interfaces;
 using Poker.Service.Interfaces;
@@ -30,26 +37,45 @@ namespace Poker.Service
 
         #region -- public methods --
 
-        public string Authenticate(string username, string password)
+        public string Authenticate(string username, string password, string secret)
         {
             IUser user = _userFactory.Get(username);
 
             bool valid =  user != null && user.CheckPassword(password);
-            string authToken = null;
-            if (valid)
-            {
-                if (!activeUserTokens.ContainsKey(username))
-                {
-                    authToken = System.Guid.NewGuid().ToString("D");
-                    activeUserTokens.Add(username, authToken);
-                }
-                else
-                {
-                    authToken = activeUserTokens[username];
-                }
-            }
 
-            return authToken;
+            // authentication successful so generate jwt token
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+                                      {
+                                          Subject = new ClaimsIdentity(new Claim[]
+                                                                           {
+                                                                               new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                                                                               new Claim(ClaimTypes.Name, user.Username)
+                                                                           }),
+                                          Expires = DateTime.UtcNow.AddDays(7),
+                                          SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                                      };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            string tokenString =  tokenHandler.WriteToken(token);
+
+            return tokenString;
+
+            //string authToken = null;
+            //if (valid)
+            //{
+            //    if (!activeUserTokens.ContainsKey(username))
+            //    {
+            //        authToken = System.Guid.NewGuid().ToString("D");
+            //        activeUserTokens.Add(username, authToken);
+            //    }
+            //    else
+            //    {
+            //        authToken = activeUserTokens[username];
+            //    }
+            //}
+
+            //return authToken;
         }
 
         #endregion

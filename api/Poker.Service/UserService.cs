@@ -52,14 +52,14 @@ namespace Poker.Service
             return result;
         }
 
-        public IList<ValidationError> Register(SaveModel model)
+        public IList<ValidationError> Register(CreateModel model)
         {
             IList<ValidationError> result;
 
+            result = Validate(model, true);
+
             using (IGenericTransaction transaction = _unitOfWork.CreateTransaction())
             {
-                result = Validate(model, true);
-
                 if (result.Count > 0)
                 {
                     transaction.Commit();
@@ -89,7 +89,7 @@ namespace Poker.Service
             return result;
         }
 
-        public IList<ValidationError> Validate(SaveModel model, bool checkUsernameExists)
+        public IList<ValidationError> Validate(CreateModel model, bool checkUsernameExists)
         {
             List<ValidationError> result = new List<ValidationError>();
             ValidationError? usernameResult = ValidateUsername(model, checkUsernameExists);
@@ -125,7 +125,7 @@ namespace Poker.Service
             return result;
         }
 
-        public ValidationError? ValidateUsername(SaveModel model, bool checkUsernameExists)
+        public ValidationError? ValidateUsername(CreateModel model, bool checkUsernameExists)
         {
             if (string.IsNullOrWhiteSpace(model.Username))
             {
@@ -151,7 +151,7 @@ namespace Poker.Service
             return null;
         }
 
-        public ValidationError? ValidatePassword(SaveModel model)
+        public ValidationError? ValidatePassword(CreateModel model)
         {
             if (string.IsNullOrWhiteSpace(model.Password))
             {
@@ -167,7 +167,7 @@ namespace Poker.Service
             return null;
         }
 
-        public ValidationError? ValidateFirstname(SaveModel model)
+        public ValidationError? ValidateFirstname(CreateModel model)
         {
             if (string.IsNullOrWhiteSpace(model.Firstname))
             {
@@ -183,7 +183,7 @@ namespace Poker.Service
             return null;
         }
 
-        public ValidationError? ValidateLastname(SaveModel model)
+        public ValidationError? ValidateLastname(CreateModel model)
         {
             if (string.IsNullOrWhiteSpace(model.Lastname))
             {
@@ -199,7 +199,7 @@ namespace Poker.Service
             return null;
         }
 
-        public ValidationError? ValidateEmail(SaveModel model)
+        public ValidationError? ValidateEmail(CreateModel model)
         {
             if (string.IsNullOrWhiteSpace(model.Email))
             {

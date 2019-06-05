@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Poker.Model.Project;
 using Poker.Model.User;
 using Poker.Service.Interfaces;
+using Poker.WebApi;
 
 namespace Poker.WebUI.Controllers
 {
+    [Authorize]
     [Produces("application/json")]
     [Route("user")]
     public class UserController : Controller
@@ -29,7 +34,7 @@ namespace Poker.WebUI.Controllers
         #endregion
 
         #region -- public methods --
-
+        [Authorize]
         [HttpGet("{username}")]
         public ActionResult Get(string username)
         {
@@ -45,8 +50,9 @@ namespace Poker.WebUI.Controllers
             }
         }
 
-        [HttpPost("register")]
-        public ActionResult Register([FromBody] SaveModel model)
+        [AllowAnonymous]
+        [HttpPut("register")]
+        public ActionResult Register([FromBody] CreateModel model)
         {
             try
             {
