@@ -11,7 +11,6 @@ using Poker.WebApi;
 
 namespace Poker.WebUI.Controllers
 {
-    [Authorize]
     [Produces("application/json")]
     [Route("user")]
     public class UserController : Controller
@@ -79,6 +78,22 @@ namespace Poker.WebUI.Controllers
             try
             {
                 IList<ProjectModel> result = _projectService.GetForUser(username);
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpGet()]
+        public ActionResult GetAll()
+        {
+            try
+            {
+                IList<UserModel> result = _userService.GetAll();
 
                 return Ok(result);
             }

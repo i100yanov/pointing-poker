@@ -1,4 +1,5 @@
-﻿using Poker.Domain.Entities.Interfaces;
+﻿using System.Collections.Generic;
+using Poker.Domain.Entities.Interfaces;
 
 namespace Poker.Domain.Factories.Interfaces
 {
@@ -9,6 +10,8 @@ namespace Poker.Domain.Factories.Interfaces
         IUser Get(string username);
 
         IUser Get(Transportation.Entities.User user);
+
+        IList<IUser> GetAll();
 
         IUser New(string username, string password);
     }

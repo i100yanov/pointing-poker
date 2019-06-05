@@ -1,4 +1,6 @@
-﻿using Poker.Domain.Entities;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Poker.Domain.Entities;
 using Poker.Domain.Entities.Interfaces;
 using Poker.Domain.Factories.Interfaces;
 using Poker.Transportation.Repository.Interfaces;
@@ -53,6 +55,15 @@ namespace Poker.Domain.Factories
         public IUser Get(Transportation.Entities.User user)
         {
             return new User(user, _projectUserRepository, _userRepository, _projectFactory);
+        }
+
+        public IList<IUser> GetAll()
+        {
+           
+            return _userRepository
+                .GetAll()
+                .Select(x => new User(x, _projectUserRepository, _userRepository, _projectFactory))
+                .Cast<IUser>().ToList();
         }
 
         public IUser New(string username, string password)

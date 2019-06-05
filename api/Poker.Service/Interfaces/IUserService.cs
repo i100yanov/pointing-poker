@@ -6,6 +6,7 @@ namespace Poker.Service.Interfaces
     public interface IUserService
     {
         UserModel Get(string username);
+        IList<UserModel> GetAll();
 
         IList<ValidationError> Register(CreateModel model);
 

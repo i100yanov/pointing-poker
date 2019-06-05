@@ -39,30 +39,31 @@ namespace Poker.WebApi
             // configure jwt authentication
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
-            services.AddAuthentication(x =>
+            services.AddAuthentication(
+                x =>
                     {
                         x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                         x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                    })
-                .AddJwtBearer(x =>
+                    }).AddJwtBearer(
+                x =>
                     {
-                        x.Events = new JwtBearerEvents
-                                       {
-                                           OnTokenValidated = context =>
-                                               {
-                                                   var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
-                                                   var user = userService.Get(context.Principal.Identity.Name);
-                                                   if (user == null)
-                                                   {
-                                                       // return unauthorized if user no longer exists
-                                                       context.Fail("Unauthorized");
-                                                   } else
-                                                   {
-                                                       context.Success();
-                                                   }
-                                                   return Task.CompletedTask;
-                                               }
-                                       };
+                        //x.Events = new JwtBearerEvents
+                        //               {
+                        //                   OnTokenValidated = context =>
+                        //                       {
+                        //                           var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
+                        //                           var user = userService.Get(context.Principal.Identity.Name);
+                        //                           if (user == null)
+                        //                           {
+                        //                               // return unauthorized if user no longer exists
+                        //                               context.Fail("Unauthorized");
+                        //                           } else
+                        //                           {
+                        //                               context.Success();
+                        //                           }
+                        //                           return Task.CompletedTask;
+                        //                       }
+                        //               };
                         x.RequireHttpsMetadata = false;
                         x.RequireHttpsMetadata = false;
                         x.SaveToken = true;
@@ -74,13 +75,7 @@ namespace Poker.WebApi
                                                               ValidateAudience = false
                                                           };
                     });
-
-            //services.ConfigureApplicationCookie(
-            //    options =>
-            //        {
-            //            options.LoginPath = "/authentication/login";
-            //            options.LogoutPath = "/authentication/logoff";
-            //        });
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -96,8 +91,14 @@ namespace Poker.WebApi
                 .AllowAnyMethod()
                 .AllowAnyHeader());
 
-            app.UseMvc();
             app.UseAuthentication();
+            app.UseMvc();
+
+            app.UseSignalR(routes =>
+                {
+                    routes.MapHub<Hubs.ChatHub>("/signalr/chat");
+                });
+
         }
     }
 }

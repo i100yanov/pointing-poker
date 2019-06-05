@@ -7,6 +7,7 @@ import { UserContext } from '../context/UserContext';
 import PrivateRoute from '../rotue/PrivateRoute';
 import Homepage from '../home/Homepage';
 import CreateProfile from '../profile/create/CreateProfile';
+import Chat from '../chat/Chat';
 
 export default class App extends React.Component {
   
@@ -28,7 +29,11 @@ export default class App extends React.Component {
             </Router>
           } 
           </UserContext.Consumer>
+         <div>
+           <Chat />
+        </div>
         </UserContext.Provider>
+
       </div>
       
     );

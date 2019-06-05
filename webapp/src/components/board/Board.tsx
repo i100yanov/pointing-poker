@@ -13,12 +13,21 @@ export default class Board extends Component<IProps, IState>{
 
   render() {
 
+    const users = this.state.users || [];
+    const usersList =  users.map((user) =>
+    <li key={user.username}>
+      {user.username} - {user.email}
+    </li>
+  );;
+
+    
     const userService = new UserService();
     userService
-        .get(this.context.token, this.context.username)
+        .getAll(this.context.token)
         .then((response: Response) => {
           if (response.status === 200) {
-             response.json().then(data => this.setState({user: data}))
+             response.json().then(data => 
+              this.setState({users: data}))
           } else {
               response.text().then( errors => console.log(errors));
           }
@@ -38,7 +47,8 @@ export default class Board extends Component<IProps, IState>{
         </b>
         </Alert>
 
-        <div>{ this.state.user }</div>
+
+        <ul>{ usersList }</ul>
       </div>
     );
   }
@@ -47,7 +57,7 @@ export default class Board extends Component<IProps, IState>{
 Board.contextType = UserContext;
 
 interface IState {
-  user?: UserModel
+  users?: UserModel[]
 }
 
 interface IProps { }

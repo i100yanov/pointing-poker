@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Poker.Domain.Entities.Interfaces;
 using Poker.Domain.Factories.Interfaces;
@@ -50,6 +51,19 @@ namespace Poker.Service
             };
 
             return result;
+        }
+
+        public IList<UserModel> GetAll()
+        {
+            return _userFactory.GetAll().Select(
+                user => new UserModel
+                            {
+                                Username = user.Username,
+                                Firstname = user.Firstname,
+                                Lastname = user.Lastname,
+                                Email = user.Email
+                            }).ToList();
+
         }
 
         public IList<ValidationError> Register(CreateModel model)
