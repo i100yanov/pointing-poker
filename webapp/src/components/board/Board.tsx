@@ -11,16 +11,7 @@ export default class Board extends Component<IProps, IState>{
     this.state = {  };
   }
 
-  render() {
-
-    const users = this.state.users || [];
-    const usersList =  users.map((user) =>
-    <li key={user.username}>
-      {user.username} - {user.email}
-    </li>
-  );;
-
-    
+  componentDidMount(){
     const userService = new UserService();
     userService
         .getAll(this.context.token)
@@ -36,6 +27,18 @@ export default class Board extends Component<IProps, IState>{
       .catch((error) =>
           console.log(error.toString())
       );
+  }
+
+  render() {
+    const users = this.state.users || [];
+    const usersList =  users.map((user) =>
+    <li key={user.username}>
+      {user.username} - {user.email}
+    </li>
+  );;
+
+    
+    
     return (
       
       <div className="Bord">

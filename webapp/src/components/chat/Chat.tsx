@@ -16,7 +16,9 @@ class Chat extends Component<IProps, IState> {
   componentDidMount = () => {
     const nick = window.prompt('Your name:', 'John');
 
-    const hubConnection : HubConnection = new HubConnectionBuilder().withUrl('http://localhost/api/signalr/chat').build();
+    const hubConnection : HubConnection = new HubConnectionBuilder()
+    .withUrl('http://localhost/poker/api/signalr/chat')
+    .build();
 
     this.setState({ nick, hubConnection }, () => {
       
