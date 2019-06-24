@@ -4,6 +4,8 @@ import { UserContext } from "../context/UserContext";
 import { Alert } from "react-bootstrap";
 import UserModel from "../../models/UserModel";
 import { UserService } from "../../api/UserService";
+import Chat from "../chat/Chat";
+
 export default class Board extends Component<IProps, IState>{
   constructor(props: any) {
     super(props);
@@ -50,8 +52,13 @@ export default class Board extends Component<IProps, IState>{
         </b>
         </Alert>
 
-
+        <div><h3>All Users</h3></div>
         <ul>{ usersList }</ul>
+        
+
+        <div>
+           <Chat username={ this.context.username } />
+        </div>
       </div>
     );
   }
@@ -63,4 +70,5 @@ interface IState {
   users?: UserModel[]
 }
 
-interface IProps { }
+interface IProps {
+}

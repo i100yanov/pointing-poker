@@ -29,9 +29,6 @@ export default class App extends React.Component {
             </Router>
           } 
           </UserContext.Consumer>
-         <div>
-           <Chat />
-        </div>
         </UserContext.Provider>
 
       </div>
