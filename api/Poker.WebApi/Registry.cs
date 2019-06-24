@@ -66,9 +66,9 @@ namespace Poker.WebApi
 
         private static void Services(IServiceCollection services)
         {
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IProjectService, ProjectService>();
-            services.AddScoped<IUserService, UserService>();
         }
     }
 }

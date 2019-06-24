@@ -16,10 +16,6 @@ namespace Poker.Service
     public class AuthenticationService : IAuthenticationService
     {
         #region -- private readonly fields --
-
-        private readonly Dictionary<string, string> activeUserTokens = new Dictionary<string, string>(System.StringComparer.OrdinalIgnoreCase);
-        private readonly IUnitOfWork _unitOfWork;
-
         private readonly IUserFactory _userFactory;
 
         #endregion
@@ -28,8 +24,6 @@ namespace Poker.Service
 
         public AuthenticationService(IUnitOfWork unitOfWork, IUserFactory userFactory)
         {
-            _unitOfWork = unitOfWork;
-
             _userFactory = userFactory;
         }
 
@@ -60,22 +54,6 @@ namespace Poker.Service
             string tokenString =  tokenHandler.WriteToken(token);
 
             return tokenString;
-
-            //string authToken = null;
-            //if (valid)
-            //{
-            //    if (!activeUserTokens.ContainsKey(username))
-            //    {
-            //        authToken = System.Guid.NewGuid().ToString("D");
-            //        activeUserTokens.Add(username, authToken);
-            //    }
-            //    else
-            //    {
-            //        authToken = activeUserTokens[username];
-            //    }
-            //}
-
-            //return authToken;
         }
 
         #endregion

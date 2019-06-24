@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using NHibernate;
 using Poker.Transportation.Entities;
 using Poker.Transportation.Repository.Base;
@@ -17,6 +18,11 @@ namespace Poker.Transportation.Repository
             return Session.Query<User>()
                           .FirstOrDefault(x => x.Username == username && 
                                                x.DeletedAt == null);
+        }
+
+        public IList<User> GetAllActive(int projectId)
+        {
+            return Session.Query<User>().ToList();
         }
     }
 }

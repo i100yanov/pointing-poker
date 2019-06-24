@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import "./Login.css";
-import { ChangeEvent } from "react";
 import { AuthenticationService } from "../../api/AuthenticationService";
 import { UserContext } from "../context/UserContext";
 import { Link } from "react-router-dom";
-import { Form, FormControlProps, Button, Alert } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 
 export default class Login extends Component<IProps, IState>{
   constructor(props: IProps) {
@@ -15,6 +14,27 @@ export default class Login extends Component<IProps, IState>{
       password: "",
       message: "",
     };
+  }
+
+  componentWillMount(){
+    if (this.context.authenticated){
+      const authenticationService = new AuthenticationService();
+      authenticationService
+        .logout(this.context.token, 'Manual logout.')
+        .then(() => {
+          this.context.token = null;
+          this.context.username = null;
+          this.context.authenticated = null;
+        }
+        )
+        .catch(
+          () => {
+            this.context.token = null;
+            this.context.username = null;
+            this.context.authenticated = null;
+          }
+        );
+      }
   }
 
   render() {
@@ -45,13 +65,13 @@ export default class Login extends Component<IProps, IState>{
               onChange={  (e:any)  => this.handleChange(e) }
               type="password"
               isValid={ !!this.state.password }
+              autoComplete="off"
             />
       </Form.Group>
 
         <Button
             block
-            type="submit"
-          >
+            type="submit">
             Login
           </Button>
       </Form>
@@ -97,7 +117,7 @@ export default class Login extends Component<IProps, IState>{
       this.context.username = username;
       this.context.token = token;
       this.context.authenticated = true;
-      this.props.history.push("/board");
+      this.props.history.push("/");
     }
     else {
       this.onLoginFailed(this.state.username, "Login failed - username and password does not match.")

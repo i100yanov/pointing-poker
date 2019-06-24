@@ -21,8 +21,6 @@ export class UserService implements IUserService {
  
     get(token: string, username: string): Promise<Response> {
 
-        let data = { username};
-
         const endpointUrl = 'http://localhost/poker/api/user/' + username;
         const requestInit : RequestInit = {
             method: 'GET', // *GET, POST, PUT, DELETE, etc.
@@ -40,6 +38,19 @@ export class UserService implements IUserService {
     getAll(token: string): Promise<Response> {
 
         const endpointUrl = 'http://localhost/poker/api/user';
+        const requestInit : RequestInit = {
+            method: 'GET', // *GET, POST, PUT, DELETE, etc.
+            headers: {
+                'Accept' : 'application/json',
+                'Content-type' : 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        };
+
+        return fetch(endpointUrl, requestInit);
+    }
+    getAllActive(token: string): Promise<Response> {
+        const endpointUrl = 'http://localhost/poker/api/user/active';
         const requestInit : RequestInit = {
             method: 'GET', // *GET, POST, PUT, DELETE, etc.
             headers: {

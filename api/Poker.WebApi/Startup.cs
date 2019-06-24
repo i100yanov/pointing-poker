@@ -101,7 +101,7 @@ namespace Poker.WebApi
          
             app.UseSignalR(routes =>
                 {
-                    routes.MapHub<Hubs.ChatHub>("/signalr/chat");
+                    routes.MapHub<Hubs.NotificationHub>("/signalr/notification");
                 });
 
             app.UseMvc();

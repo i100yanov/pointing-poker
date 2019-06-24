@@ -2,10 +2,32 @@
   padding: 60px 0;
 }
 
+
+.CreateProfile h1 {
+  text-align: center;
+  margin: 20px;
+}
+
 .CreateProfile form {
   margin: 0 auto;
   max-width: 600px;
 }
+
+.CreateProfile button a , .CreateProfile button a:hover {
+  display: block;
+   height: 100%;
+    color: white;
+  text-decoration: none
+}
+
+
+.CreateProfile form .form-row>.col{
+  margin-bottom: 20px;
+}
+.CreateProfile .form-inline label {
+  justify-content: left;
+}
+
 
 .error{
   color: red;

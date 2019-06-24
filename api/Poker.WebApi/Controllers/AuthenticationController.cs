@@ -22,8 +22,8 @@ namespace Poker.WebUI.Controllers
         private readonly IUserService _userService;
 
         private readonly AppSettings _appSettings;
+        private readonly IHubContext<NotificationHub> _chatHubContext;
 
-        private readonly IHubContext<ChatHub> _chatHubContext;
         #endregion
 
         #region -- constructor --
@@ -31,7 +31,7 @@ namespace Poker.WebUI.Controllers
         public AuthenticationController(IAuthenticationService authenticationService, 
                                         IUserService userService, 
                                         IOptions<AppSettings> appSettings,
-                                        IHubContext<ChatHub> chatHubContext)
+                                        IHubContext<NotificationHub> chatHubContext)
         {
             _authenticationService = authenticationService;
             _userService = userService;
@@ -61,9 +61,33 @@ namespace Poker.WebUI.Controllers
 
                 UserModel model = _userService.Get(loginData.Username.Trim());
 
+                _userService.Login(model.Username);
+
                 _chatHubContext.Clients.All.SendAsync("sendToAll", model.Username, "Hi! I'm in.");
+                _chatHubContext.Clients.All.SendAsync("activeUsers", _userService.GetAllActive());
 
                 return Ok(token);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+        }
+
+
+        [Authorize]
+        [HttpPost("logout")]
+        public ActionResult Logout([FromBody]string reason)
+        {
+            try
+            {
+                if( _userService.Logout(this.User.Identity.Name))
+                {
+                    _chatHubContext.Clients.All.SendAsync("sendToAll", this.User.Identity.Name, $"I'm out. ({reason})");
+                    _chatHubContext.Clients.All.SendAsync("activeUsers", _userService.GetAllActive());
+                }
+
+                return Ok();
             }
             catch (Exception e)
             {

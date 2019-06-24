@@ -4,6 +4,7 @@ import { Form, FormControlProps, Col } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { ReplaceProps, BsPrefixProps } from "react-bootstrap/helpers";
 import { UserService } from "../../../api/UserService";
+import { BrowserRouter, Link } from "react-router-dom";
 
 export default class CreateProfile extends Component<IProps, IState>{
 
@@ -24,12 +25,13 @@ export default class CreateProfile extends Component<IProps, IState>{
     render() {
         return (
             <div className="CreateProfile">
+                <h1> Create Profile </h1>
                 <Form
                     inline
                     onSubmit={(e: any) => this.handleSubmit(e)}>
                     <Form.Row>
                         <Form.Group as={Col}>
-                            <Form.Label  column sm="4">Username</Form.Label>
+                            <Form.Label column sm="4">Username</Form.Label>
                             <Form.Control
                                 autoFocus
                                 required
@@ -39,11 +41,11 @@ export default class CreateProfile extends Component<IProps, IState>{
                             />
                             <Form.Control.Feedback type="invalid">
                                 Please choose a username.
-            </Form.Control.Feedback>
+                            </Form.Control.Feedback>
                         </Form.Group>
 
                         <Form.Group as={Col} >
-                            <Form.Label  column sm="4">Password</Form.Label>
+                            <Form.Label column sm="4">Password</Form.Label>
                             <Form.Control
                                 required
                                 name="password"
@@ -71,37 +73,38 @@ export default class CreateProfile extends Component<IProps, IState>{
                         </Form.Group>
 
                         <Form.Group as={Col}>
-                            <Form.Label  column sm="4">First name</Form.Label>
+                            <Form.Label column sm="4">First name</Form.Label>
                             <Form.Control
                                 required
                                 name="firstname"
                                 value={this.state.firstname}
                                 onChange={(e: any) => this.handleChange(e)}
-                                isValid={!!this.state.firstname }
+                                isValid={!!this.state.firstname}
                             />
                             <Form.Control.Feedback type="invalid"> Please choose first name. </Form.Control.Feedback>
                         </Form.Group>
 
                         <Form.Group as={Col}>
-                            <Form.Label  column sm="4">Last name</Form.Label>
+                            <Form.Label column sm="4">Last name</Form.Label>
                             <Form.Control
                                 required
                                 name="lastname"
                                 value={this.state.lastname}
                                 onChange={(e: any) => this.handleChange(e)}
-                                isValid={!!this.state.lastname }
+                                isValid={!!this.state.lastname}
                             />
                             <Form.Control.Feedback type="invalid"> Please choose last name.</Form.Control.Feedback>
                         </Form.Group>
 
                         <Form.Group as={Col}>
+                            <Form.Label column sm="4">Email</Form.Label>
                             <Form.Control
                                 required
                                 name="email"
                                 value={this.state.email}
                                 onChange={(e: any) => this.handleChange(e)}
                                 type='email'
-                                isValid={!!this.state.email }
+                                isValid={!!this.state.email}
                             />
                             <Form.Control.Feedback type="invalid"> Please choose email. </Form.Control.Feedback>
                         </Form.Group>
@@ -115,7 +118,13 @@ export default class CreateProfile extends Component<IProps, IState>{
                         <Form.Group as={Col}>
                             <Button block type="submit">
                                 Create Profile
-          </Button>
+                            </Button>
+                            <button>
+                                
+                            </button>
+                            <Button block type="button">
+                                <Link to="/login">Cancel</Link>
+                            </Button>
                         </Form.Group>
                     </Form.Row>
                 </Form>
@@ -148,7 +157,7 @@ export default class CreateProfile extends Component<IProps, IState>{
                     if (response.status === 200) {
                         this.onRegisterSuccess();
                     } else {
-                        response.text().then( errors => this.onRegisterFailed(errors));
+                        response.text().then(errors => this.onRegisterFailed(errors));
                     }
                     return response;
                 })

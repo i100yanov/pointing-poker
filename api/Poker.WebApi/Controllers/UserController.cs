@@ -33,6 +33,7 @@ namespace Poker.WebUI.Controllers
         #endregion
 
         #region -- public methods --
+
         [Authorize]
         [HttpGet("{username}")]
         public ActionResult Get(string username)
@@ -103,6 +104,21 @@ namespace Poker.WebUI.Controllers
             }
         }
 
+        [Authorize]
+        [HttpGet("active")]
+        public ActionResult GetAllActive()
+        {
+            try
+            {
+                IList<UserModel> result = _userService.GetAllActive();
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+        }
         #endregion
     }
 }

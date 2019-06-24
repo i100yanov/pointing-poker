@@ -14,5 +14,8 @@ namespace Poker.Domain.Factories.Interfaces
         IList<IUser> GetAll();
 
         IUser New(string username, string password);
+        void AddToActiveList(string username);
+        bool RemoveFromActiveList(string username);
+       IList<IUser> GetAllActive();
     }
 }

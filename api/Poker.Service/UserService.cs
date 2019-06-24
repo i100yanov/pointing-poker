@@ -17,7 +17,6 @@ namespace Poker.Service
         private readonly IUnitOfWork _unitOfWork;
 
         private readonly IUserFactory _userFactory;
-
         #endregion
 
         #region -- constructor --
@@ -27,6 +26,7 @@ namespace Poker.Service
             _unitOfWork = unitOfWork;
 
             _userFactory = userFactory;
+
         }
 
         #endregion
@@ -239,6 +239,28 @@ namespace Poker.Service
             }
 
             return null;
+        }
+
+        public bool Logout(string username)
+        {
+            return _userFactory.RemoveFromActiveList(username);
+        }
+
+        public void Login(string username)
+        {
+            _userFactory.AddToActiveList(username);
+        }
+
+        public IList<UserModel> GetAllActive()
+        {
+            return _userFactory.GetAllActive().Select(
+                user => new UserModel
+                            {
+                                Username = user.Username,
+                                Firstname = user.Firstname,
+                                Lastname = user.Lastname,
+                                Email = user.Email
+                            }).ToList();
         }
 
         #endregion

@@ -8,6 +8,8 @@ namespace Poker.Service.Interfaces
         UserModel Get(string username);
         IList<UserModel> GetAll();
 
+        IList<UserModel> GetAllActive();
+
         IList<ValidationError> Register(CreateModel model);
 
         IList<ValidationError> Validate(CreateModel model, bool checkUsernameExists);
@@ -21,5 +23,8 @@ namespace Poker.Service.Interfaces
         ValidationError? ValidateLastname(CreateModel model);
 
         ValidationError? ValidateEmail(CreateModel model);
+        bool Logout(string username);
+
+        void Login(string username);
     }
 }
