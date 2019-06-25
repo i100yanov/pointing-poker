@@ -4,6 +4,7 @@ import { AuthenticationService } from "../../api/AuthenticationService";
 import { UserContext } from "../context/UserContext";
 import { Link } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
+import handleErrors from "../../utils/handleErrors";
 
 export default class Login extends Component<IProps, IState>{
   constructor(props: IProps) {
@@ -74,8 +75,10 @@ export default class Login extends Component<IProps, IState>{
             type="submit">
             Login
           </Button>
+          <Button block type="button">
+              <Link to="/profile/create">Sign Up</Link>
+        </Button>
       </Form>
-      <Link to="/profile/create">Sign Up</Link>
       <h3>{this.state.message}</h3>
       </div>
     );
@@ -96,6 +99,7 @@ export default class Login extends Component<IProps, IState>{
     const authenticationService = new AuthenticationService();
     authenticationService
       .login(this.state.username, this.state.password)
+      .then((response: Response) => response.text())
       .then(
         (text) =>
           this.onLoginSuccess(this.state.username, JSON.parse(text)))

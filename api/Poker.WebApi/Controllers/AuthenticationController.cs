@@ -63,14 +63,14 @@ namespace Poker.WebUI.Controllers
 
                 _userService.Login(model.Username);
 
-                _chatHubContext.Clients.All.SendAsync("sendToAll", model.Username, "Hi! I'm in.");
+                _chatHubContext.Clients.All.SendAsync("sendToAll", "System", $"{model.Username} has entered the building.");
                 _chatHubContext.Clients.All.SendAsync("activeUsers", _userService.GetAllActive());
 
                 return Ok(token);
             }
             catch (Exception e)
             {
-                return StatusCode(500, e.Message);
+                return this.StatusCode(500, e.Message);
             }
         }
 
@@ -83,7 +83,7 @@ namespace Poker.WebUI.Controllers
             {
                 if( _userService.Logout(this.User.Identity.Name))
                 {
-                    _chatHubContext.Clients.All.SendAsync("sendToAll", this.User.Identity.Name, $"I'm out. ({reason})");
+                    _chatHubContext.Clients.All.SendAsync("sendToAll", "System", $" {this.User.Identity.Name} has left the building.");
                     _chatHubContext.Clients.All.SendAsync("activeUsers", _userService.GetAllActive());
                 }
 

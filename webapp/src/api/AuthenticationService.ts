@@ -1,7 +1,8 @@
 import { IAuthenticationService } from "./interfaces/IAuthenticaionService";
+import handleErrors from "../utils/handleErrors";
 
 export class AuthenticationService implements IAuthenticationService {
-    login(username: string, password: string): Promise<string> {
+    login(username: string, password: string): Promise<Response> {
 
         let data = { username, password };
 
@@ -16,7 +17,7 @@ export class AuthenticationService implements IAuthenticationService {
         };
 
         return fetch(endpointUrl, requestInit)
-            .then((response) => response.text());
+        .then((response: Response) => handleErrors(response));
     }
  
     logout(token: string, reason: string): Promise<Response> {
@@ -33,6 +34,7 @@ export class AuthenticationService implements IAuthenticationService {
             }
         };
 
-        return fetch(endpointUrl, requestInit);
+        return fetch(endpointUrl, requestInit)
+        .then((response: Response) => handleErrors(response));
     }
 }

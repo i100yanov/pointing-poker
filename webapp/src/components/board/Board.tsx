@@ -6,6 +6,7 @@ import UserModel from "../../models/UserModel";
 import { UserService } from "../../api/UserService";
 import Chat from "../chat/Chat";
 import BoardUsers from "./users/BoardUsers";
+import { Link } from "react-router-dom";
 
 export default class Board extends Component<IProps, IState>{
   constructor(props: any) {
@@ -29,9 +30,10 @@ export default class Board extends Component<IProps, IState>{
           { ctx => ctx.username }
         </UserContext.Consumer>
         </b>
+        <div><Link to="/login">Logout</Link></div>
         </Alert>
 
-        <div><h3>All Users</h3></div>
+        <div><h3>Active Users</h3></div>
         <BoardUsers />
         
 

@@ -1,4 +1,5 @@
 import { IUserService } from "./interfaces/IUserService";
+import handleErrors from "../utils/handleErrors";
 
 export class UserService implements IUserService {
     register(token: string, username: string, password: string, email:string, firstname:string, lastname:string): Promise<Response> {
@@ -16,7 +17,8 @@ export class UserService implements IUserService {
             body: JSON.stringify(data), // body data type must match "Content-Type" header
         };
 
-        return fetch(endpointUrl, requestInit);
+        return fetch(endpointUrl, requestInit)
+                .then((response: Response) => handleErrors(response));
     }
  
     get(token: string, username: string): Promise<Response> {
@@ -31,10 +33,10 @@ export class UserService implements IUserService {
             }
         };
 
-        return fetch(endpointUrl, requestInit);
+        return fetch(endpointUrl, requestInit)
+        .then((response: Response) => handleErrors(response));
     }
 
-    
     getAll(token: string): Promise<Response> {
 
         const endpointUrl = 'http://localhost/poker/api/user';
@@ -47,8 +49,10 @@ export class UserService implements IUserService {
             }
         };
 
-        return fetch(endpointUrl, requestInit);
+        return fetch(endpointUrl, requestInit)
+        .then((response: Response) => handleErrors(response));
     }
+
     getAllActive(token: string): Promise<Response> {
         const endpointUrl = 'http://localhost/poker/api/user/active';
         const requestInit : RequestInit = {
@@ -60,6 +64,7 @@ export class UserService implements IUserService {
             }
         };
 
-        return fetch(endpointUrl, requestInit);
+        return fetch(endpointUrl, requestInit)
+        .then((response: Response) => handleErrors(response));
     }
 }
