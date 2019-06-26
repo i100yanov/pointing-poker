@@ -9,14 +9,16 @@ import Homepage from '../home/Homepage';
 import CreateProfile from '../profile/create/CreateProfile';
 import { AuthenticationService } from '../../api/AuthenticationService';
 import { NotificationContext } from '../context/NotificationContext';
-import { ChatHubService } from '../../api/ChatHubService';
+import { NotificationHubService } from '../../api/NotificationHubService';
+import { Container, Sidebar, Menu, Icon, Segment, Header } from 'semantic-ui-react';
 
 export default class App extends React.Component {
 
   render() {
     return (
-      <div className="App container">
-       <NotificationContext.Provider value={{ hub: new ChatHubService() }}>
+      <div className="App container" >
+
+       <NotificationContext.Provider value={{ hub: new NotificationHubService() }}>
           <UserContext.Provider value={{ username: '', token: '', authenticated: false }}>
             <UserContext.Consumer>
               {
@@ -34,10 +36,14 @@ export default class App extends React.Component {
             </UserContext.Consumer>
           </UserContext.Provider>
         </NotificationContext.Provider>
+        
       </div>
     );
   }
 
+  handleSidebarHide(){
+
+  }
   componentWillUnmount() {
     if (this.context.authenticated){
     const authenticationService = new AuthenticationService();

@@ -1,9 +1,9 @@
 import React from "react";
-import { IChatHubService } from "../../api/interfaces/IChatHubService";
-import { ChatHubService } from "../../api/ChatHubService";
+import { INotificationHubService } from "../../api/interfaces/INotificationHubService";
+import { NotificationHubService } from "../../api/NotificationHubService";
 
-const defaultUserContext : INotificationContext = { hub: new ChatHubService() }
+const defaultUserContext : INotificationContext = { hub: new NotificationHubService() }
 export const NotificationContext = React.createContext<INotificationContext>(defaultUserContext);
 export interface INotificationContext {
-    hub: IChatHubService;
+    hub: INotificationHubService;
 }

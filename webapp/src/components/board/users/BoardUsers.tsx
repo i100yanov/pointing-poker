@@ -4,6 +4,7 @@ import UserModel from "../../../models/UserModel";
 import { UserService } from "../../../api/UserService";
 import "./BoardUsers.css";
 import { NotificationContext } from "../../context/NotificationContext";
+import { Card, Image, Icon } from "semantic-ui-react";
 
 export default class BoardUsers extends Component<IProps, IState>{
   constructor(props: any) {
@@ -39,21 +40,42 @@ export default class BoardUsers extends Component<IProps, IState>{
   render() {
     const users = this.state.users || [];
     const usersList = users.map((user) =>
-    <li key={user.username}>
-    {user.username} - {user.email}
-    </li>
+
+      <Card key={user.username}>
+        <Image src={user.photoUrl} wrapped ui={false} />
+        <Card.Content>
+          <Card.Header>{user.firstname} {user.lastname}  </Card.Header>
+          <Card.Meta>
+            <label>email:</label>
+            <span className='email'>{user.email} </span>
+          </Card.Meta>
+          <Card.Meta>
+            <label>username:</label>
+            <span className='username'>{user.username} </span>
+          </Card.Meta>
+          <Card.Description>
+            Some description.
+      </Card.Description>
+        </Card.Content>
+        <Card.Content extra>
+          <a>
+            <Icon name='folder outline' />
+            22 Projects
+          </a>
+        </Card.Content>
+      </Card>
     );
 
     return (
       <div>
         <NotificationContext.Consumer>
-        {
-         ctx =>  { 
-                ctx.hub.onActiveUsers((users: UserModel[]) =>  this.setState({ users: users })); 
-                return <ul>{usersList}</ul>;
+          {
+            ctx => {
+              ctx.hub.onActiveUsers((users: UserModel[]) => this.setState({ users: users }));
+              return <Card.Group>{usersList}</Card.Group>;
+            }
           }
-        }
-      </NotificationContext.Consumer>
+        </NotificationContext.Consumer>
       </div>
     );
   }

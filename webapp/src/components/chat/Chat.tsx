@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { NotificationContext } from '../context/NotificationContext';
+import { Form, Button, Message, Container, TextArea, Divider, Transition, Feed, Icon } from 'semantic-ui-react';
 
 class Chat extends Component<IProps, IState> {
   private _isMounted = false;
@@ -34,8 +35,8 @@ class Chat extends Component<IProps, IState> {
   };
 
   sendMessage = () => {
-      this.context.hub.sendToAll(this.state.nick, this.state.message);
-      this.setState({ message: '' });
+    this.context.hub.sendToAll(this.state.nick, this.state.message);
+    this.setState({ message: '' });
 
   };
 
@@ -45,23 +46,46 @@ class Chat extends Component<IProps, IState> {
   }
   render() {
     const messages = this.state.messages || [];
+    const messagesList = messages.map((message, index) =>
+      <Feed.Event key={index}>
+        <Feed.Label></Feed.Label>
+        <Feed.Content>
+          <Feed.Summary>
+            <Feed.User>
+              {message.split(':')[0].trim()}
+            </Feed.User>
+            <Feed.Extra text>
+              {message.split(':')[1].trim()}
+            </Feed.Extra>
+          </Feed.Summary>
+        </Feed.Content>
+      </Feed.Event>);
+
     return (
-      <div>
-        <br />
-        <input
-          type="text"
-          value={this.state.message}
-          onChange={e => this.setState({ message: e.target.value })}
-        />
+      <Container>
 
-        <button onClick={this.sendMessage}>Send</button>
+        <Form onSubmit={this.sendMessage}>
+          <Form.Field>
+            <label>Chat message</label>
 
-        <div>
-          {messages.map((message: any, index: any) => (
-            <span style={{ display: 'block' }} key={index}> {message} </span>
-          ))}
-        </div>
-      </div>
+            <TextArea
+              required
+              spellcheck
+              placeholder='Write something to the logged poker players here.'
+              value={this.state.message}
+              onChange={(e: any) => this.setState({ message: e.target.value })}
+            />
+          </Form.Field>
+          <Form.Field>
+            <Button type="submit">Send</Button>
+          </Form.Field>
+        </Form>
+
+        <Feed>
+          {messagesList}
+        </Feed>
+
+      </Container>
     );
   }
 }

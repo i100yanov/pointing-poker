@@ -1,8 +1,8 @@
-import { IChatHubService } from "./interfaces/IChatHubService";
+import { INotificationHubService } from "./interfaces/INotificationHubService";
 import { HubConnection, HubConnectionBuilder } from "@aspnet/signalr";
 import UserModel from "../models/UserModel";
 
-export class ChatHubService implements IChatHubService {
+export class NotificationHubService implements INotificationHubService {
 
     private _connection: HubConnection;
     private _endpoint = 'http://localhost/poker/api/signalr/notification';

@@ -4,4 +4,5 @@ export default class UserModel {
     firstname: string | undefined;
     lastname: string | undefined;
     token: string | undefined;
+    photoUrl: string | undefined;
 }
